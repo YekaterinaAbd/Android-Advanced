@@ -1,10 +1,11 @@
 package com.example.calculator.presenter
 
 import com.example.calculator.contract.Contract
+import com.example.calculator.cutString
 import com.example.calculator.model.Calculator
 import com.example.calculator.model.Operator
 import com.example.calculator.model.State
-import com.example.calculator.model.toEnum
+import com.example.calculator.toEnum
 import java.text.DecimalFormat
 import java.text.NumberFormat
 
@@ -15,11 +16,6 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
 
     override fun processOperator(operator: String) {
         when (calc.state) {
-            State.STATE_EMPTY -> {
-                if (calc.operator == Operator.ANSWER) {
-                    setOperator(operator)
-                }
-            }
             State.STATE_FIRST_NUMBER -> {
                 setOperator(operator)
             }
@@ -27,7 +23,7 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
                 view.eraseSymbol()
                 setOperator(operator)
             }
-            State.STATE_SECOND_NUMBER -> { }
+            else -> { }
         }
     }
 
@@ -41,7 +37,6 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
         if (!number.isNullOrEmpty()) {
             when (calc.state) {
                 State.STATE_EMPTY -> {
-                    view.clearWindow()
                     calc.firstNumber = number
                     calc.state = State.STATE_FIRST_NUMBER
                 }
@@ -60,7 +55,6 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
         view.appendWindowText(number)
     }
 
-
     override fun processBackspace() {
         when (calc.state) {
             State.STATE_EMPTY -> { }
@@ -69,10 +63,16 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
                 calc.state = State.STATE_FIRST_NUMBER
             }
             State.STATE_FIRST_NUMBER -> {
-                calc.firstNumber = calc.firstNumber.substring(0, calc.firstNumber.length - 1)
+                calc.firstNumber = calc.firstNumber.cutString()
+                if (calc.firstNumber.isEmpty()) {
+                    calc.state = State.STATE_EMPTY
+                }
             }
             State.STATE_SECOND_NUMBER -> {
-                calc.secondNumber = calc.secondNumber.substring(0, calc.secondNumber.length - 1)
+                calc.secondNumber = calc.secondNumber.cutString()
+                if (calc.secondNumber.isEmpty()) {
+                    calc.state = State.STATE_OPERATION
+                }
             }
         }
         view.eraseSymbol()
@@ -126,10 +126,8 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
             }
             calc.firstNumber = calc.answer.toString()
             calc.operator = Operator.ANSWER
-            calc.state = State.STATE_EMPTY
+            calc.state = State.STATE_FIRST_NUMBER
             calc.secondNumber = ""
         }
     }
 }
-
-

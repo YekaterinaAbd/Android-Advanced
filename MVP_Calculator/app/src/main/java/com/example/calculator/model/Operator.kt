@@ -8,13 +8,3 @@ enum class Operator {
     MULTIPLY,
     ANSWER
 }
-
-fun String.toEnum(): Operator {
-    return when (this) {
-        "+" -> Operator.ADD
-        "-" -> Operator.SUBTRACT
-        "÷" -> Operator.DIVIDE
-        "×" -> Operator.MULTIPLY
-        else -> Operator.EMPTY
-    }
-}
