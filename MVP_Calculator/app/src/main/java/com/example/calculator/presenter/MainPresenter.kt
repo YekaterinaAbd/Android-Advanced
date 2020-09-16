@@ -1,25 +1,24 @@
 package com.example.calculator.presenter
 
 import com.example.calculator.contract.Contract
-import com.example.calculator.cutString
 import com.example.calculator.model.Calculator
 import com.example.calculator.model.Operator
 import com.example.calculator.model.State
-import com.example.calculator.toEnum
-import java.text.DecimalFormat
-import java.text.NumberFormat
+import com.example.calculator.utils.ERROR
+import com.example.calculator.utils.cutString
+import com.example.calculator.utils.nf
+import com.example.calculator.utils.toEnum
 
 class MainPresenter(private val view: Contract.View) : Contract.Presenter {
 
     private val calc = Calculator()
-    private val nf: NumberFormat = DecimalFormat("#.######")
 
     override fun processOperator(operator: String) {
         when (calc.state) {
-            State.STATE_FIRST_NUMBER -> {
+            State.FIRST_NUMBER -> {
                 setOperator(operator)
             }
-            State.STATE_OPERATION -> {
+            State.OPERATION -> {
                 view.eraseSymbol()
                 setOperator(operator)
             }
@@ -29,25 +28,26 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
 
     private fun setOperator(operator: String) {
         calc.operator = operator.toEnum()
-        calc.state = State.STATE_OPERATION
+        calc.state = State.OPERATION
         view.appendWindowText(operator)
     }
 
     override fun processNumber(number: String?) {
         if (!number.isNullOrEmpty()) {
             when (calc.state) {
-                State.STATE_EMPTY -> {
+                State.EMPTY -> {
+                    view.clearWindow()
+                    calc.state = State.FIRST_NUMBER
                     calc.firstNumber = number
-                    calc.state = State.STATE_FIRST_NUMBER
                 }
-                State.STATE_OPERATION -> {
+                State.OPERATION -> {
+                    calc.state = State.SECOND_NUMBER
                     calc.secondNumber = number
-                    calc.state = State.STATE_SECOND_NUMBER
                 }
-                State.STATE_FIRST_NUMBER -> {
+                State.FIRST_NUMBER -> {
                     calc.firstNumber += number
                 }
-                State.STATE_SECOND_NUMBER -> {
+                State.SECOND_NUMBER -> {
                     calc.secondNumber += number
                 }
             }
@@ -57,21 +57,22 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
 
     override fun processBackspace() {
         when (calc.state) {
-            State.STATE_EMPTY -> { }
-            State.STATE_OPERATION -> {
-                calc.operator = Operator.EMPTY
-                calc.state = State.STATE_FIRST_NUMBER
+            State.EMPTY -> {
             }
-            State.STATE_FIRST_NUMBER -> {
+            State.OPERATION -> {
+                calc.operator = Operator.EMPTY
+                calc.state = State.FIRST_NUMBER
+            }
+            State.FIRST_NUMBER -> {
                 calc.firstNumber = calc.firstNumber.cutString()
                 if (calc.firstNumber.isEmpty()) {
-                    calc.state = State.STATE_EMPTY
+                    calc.state = State.EMPTY
                 }
             }
-            State.STATE_SECOND_NUMBER -> {
+            State.SECOND_NUMBER -> {
                 calc.secondNumber = calc.secondNumber.cutString()
                 if (calc.secondNumber.isEmpty()) {
-                    calc.state = State.STATE_OPERATION
+                    calc.state = State.OPERATION
                 }
             }
         }
@@ -82,17 +83,16 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
         calc.firstNumber = ""
         calc.secondNumber = ""
         calc.operator = Operator.EMPTY
-        calc.state = State.STATE_EMPTY
+        calc.state = State.EMPTY
         view.clearWindow()
     }
 
     override fun calculateAnswer() {
         when (calc.state) {
-            State.STATE_FIRST_NUMBER -> {
-                calc.answer = calc.firstNumber.toDouble()
-                view.displayAnswer(nf.format(calc.answer))
+            State.FIRST_NUMBER -> {
+                view.displayAnswer(nf.format(calc.firstNumber.toDouble()))
             }
-            State.STATE_SECOND_NUMBER -> {
+            State.SECOND_NUMBER -> {
                 makeCalculations()
             }
             else -> { }
@@ -101,33 +101,32 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
 
     private fun makeCalculations() {
         if (calc.firstNumber.isNotEmpty() && calc.secondNumber.isNotEmpty()) {
+            var isError = false
             when (calc.operator) {
-                Operator.ADD -> {
-                    calc.answer = calc.firstNumber.toDouble() + calc.secondNumber.toDouble()
-                    view.displayAnswer(nf.format(calc.answer))
-                }
-                Operator.SUBTRACT -> {
-                    calc.answer = calc.firstNumber.toDouble() - calc.secondNumber.toDouble()
-                    view.displayAnswer(nf.format(calc.answer))
-                }
-                Operator.MULTIPLY -> {
-                    calc.answer = calc.firstNumber.toDouble() * calc.secondNumber.toDouble()
-                    view.displayAnswer(nf.format(calc.answer))
-                }
+                Operator.ADD -> calc.firstNumber = calc.add()
+
+                Operator.SUBTRACT -> calc.firstNumber = calc.subtract()
+
+                Operator.MULTIPLY -> calc.firstNumber = calc.multiply()
+
                 Operator.DIVIDE -> {
-                    try {
-                        calc.answer = calc.firstNumber.toDouble() / calc.secondNumber.toDouble()
-                        view.displayAnswer(nf.format(calc.answer))
-                    } catch (e: ArithmeticException) {
-                        view.displayErrorMessage()
-                    }
+                    calc.firstNumber = calc.divide()
+                    if (calc.firstNumber == ERROR) isError = true
                 }
                 else -> { }
             }
-            calc.firstNumber = calc.answer.toString()
-            calc.operator = Operator.ANSWER
-            calc.state = State.STATE_FIRST_NUMBER
-            calc.secondNumber = ""
+            setAnswerState(isError)
         }
+    }
+
+    private fun setAnswerState(isError: Boolean) {
+        view.displayAnswer(calc.firstNumber)
+        calc.operator = Operator.EMPTY
+        calc.secondNumber = ""
+
+        if (isError) {
+            calc.state = State.EMPTY
+            calc.firstNumber = ""
+        } else calc.state = State.FIRST_NUMBER
     }
 }

@@ -3,11 +3,9 @@ package com.example.calculator.contract
 interface Contract {
     interface View {
         fun appendWindowText(text: String?)
-        fun setWindowText(text: String?)
         fun eraseSymbol()
         fun clearWindow()
         fun displayAnswer(answer: String)
-        fun displayErrorMessage()
     }
 
     interface Presenter {
@@ -16,5 +14,12 @@ interface Contract {
         fun calculateAnswer()
         fun processBackspace()
         fun processWindowCleared()
+    }
+
+    interface Model {
+        fun add(): String
+        fun subtract(): String
+        fun multiply(): String
+        fun divide(): String
     }
 }

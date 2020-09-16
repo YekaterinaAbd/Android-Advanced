@@ -5,6 +5,5 @@ enum class Operator {
     ADD,
     SUBTRACT,
     DIVIDE,
-    MULTIPLY,
-    ANSWER
+    MULTIPLY
 }

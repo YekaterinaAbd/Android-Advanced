@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calculator.R
 import com.example.calculator.contract.Contract
 import com.example.calculator.presenter.MainPresenter
+import com.example.calculator.utils.ERROR
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Contract.View {
@@ -42,12 +43,6 @@ class MainActivity : AppCompatActivity(), Contract.View {
         }
     }
 
-    override fun setWindowText(text: String?) {
-        if (!text.isNullOrEmpty()) {
-            textWindow.text = text
-        }
-    }
-
     override fun eraseSymbol() {
         if (!textWindow.text.isNullOrEmpty()) {
             textWindow.text = textWindow.text.subSequence(0, textWindow.text.length - 1)
@@ -56,10 +51,6 @@ class MainActivity : AppCompatActivity(), Contract.View {
 
     override fun clearWindow() {
         textWindow.text = ""
-    }
-
-    override fun displayErrorMessage() {
-        textWindow.text = getString(R.string.error)
     }
 
     private fun bindViews() {

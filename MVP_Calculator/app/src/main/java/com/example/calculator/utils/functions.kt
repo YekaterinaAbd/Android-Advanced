@@ -1,5 +1,11 @@
-package com.example.calculator
+package com.example.calculator.utils
+
 import com.example.calculator.model.Operator
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
+const val ERROR = "Error"
+val nf: NumberFormat = DecimalFormat("#.######")
 
 fun String.toEnum(): Operator {
     return when (this) {
@@ -12,7 +18,8 @@ fun String.toEnum(): Operator {
 }
 
 fun String.cutString(): String {
-    return if (this.isNotEmpty()) {
-        this.substring(0, this.length - 1)
+    val string = nf.format(this.toDouble()).toString()
+    return if (string.isNotEmpty()) {
+        string.substring(0, string.length - 1)
     } else ""
 }
