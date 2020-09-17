@@ -64,7 +64,7 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
                 calc.state = State.FIRST_NUMBER
             }
             State.FIRST_NUMBER -> {
-                calc.firstNumber = calc.firstNumber.cutString()
+                calc.firstNumber = eraseNumber(calc.firstNumber)
                 if (calc.firstNumber.isEmpty()) {
                     calc.state = State.EMPTY
                 }
@@ -77,6 +77,12 @@ class MainPresenter(private val view: Contract.View) : Contract.Presenter {
             }
         }
         view.eraseSymbol()
+    }
+
+    private fun eraseNumber(number: String): String {
+        val lastIndex = number.length - 1
+        return if (number[lastIndex] != '.') calc.firstNumber.cutString()
+        else calc.firstNumber.substring(0, lastIndex)
     }
 
     override fun processWindowCleared() {
