@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:animateLayoutChanges="true"
+    app:cardCornerRadius="5dp"
+    app:contentPadding="16dp"
+    app:contentPaddingBottom="20dp"
+    app:contentPaddingTop="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/setup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/type"
+            tools:text="What did the fish say when it hit the wall?" />
+
+        <TextView
+            android:id="@+id/punchline"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:animateLayoutChanges="true"
+            android:text="@string/dots"
+            android:textAlignment="viewStart"
+            android:textColor="#745CA5"
+            android:textSize="16sp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/setup"
+            app:layout_constraintStart_toStartOf="@+id/setup"
+            app:layout_constraintTop_toBottomOf="@+id/setup"
+            tools:text="text text" />
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/arrow"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/setup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/setup"
+            app:srcCompat="@drawable/ic_down_arrow" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SmallSp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
