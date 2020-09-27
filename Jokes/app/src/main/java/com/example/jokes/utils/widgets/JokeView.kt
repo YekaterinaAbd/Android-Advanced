@@ -1,14 +1,13 @@
-package com.example.jokes.utils
+package com.example.jokes.utils.widgets
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.jokes.R
-import com.example.jokes.model.Joke
+import com.example.jokes.data.model.Joke
 
 
 class JokeView : CardView {
@@ -26,10 +25,11 @@ class JokeView : CardView {
         init(context, attrs)
     }
 
-    fun setData(joke: Joke) {
+    fun setData(joke: Joke, byType: Boolean) {
         punchline.text = joke.punchline
         setup.text = joke.setup
-        type.text = context.getString(R.string.tag, joke.type)
+        if(!byType) type.text = context.getString(R.string.tag, joke.type)
+        else type.visibility = View.GONE
         punchline.visibility = View.GONE
         arrow.setImageResource(R.drawable.ic_down_arrow)
 
@@ -46,6 +46,9 @@ class JokeView : CardView {
         }
     }
 
+    fun getJokeTypeView(): View {
+        return type
+    }
 
     private fun init(context: Context) {
         inflate(context, R.layout.joke_view, this)

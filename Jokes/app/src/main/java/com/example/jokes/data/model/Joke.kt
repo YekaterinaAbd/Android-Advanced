@@ -1,4 +1,4 @@
-package com.example.jokes.model
+package com.example.jokes.data.model
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,16 +1,12 @@
-package com.example.jokes.data
+package com.example.jokes.data.api
 
 import android.util.Log
-import com.example.jokes.model.Joke
+import com.example.jokes.utils.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
-
-const val BASE_URL = "https://official-joke-api.appspot.com/"
 
 object RetrofitService {
 
@@ -40,12 +36,4 @@ object RetrofitService {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
-}
-
-interface JokeApi {
-    @GET("random_ten")
-    suspend fun getJokes(): Response<List<Joke>>
-
-    @GET("random_joke")
-    suspend fun getJoke(): Response<Joke>
 }

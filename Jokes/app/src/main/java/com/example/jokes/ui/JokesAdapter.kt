@@ -1,12 +1,19 @@
-package com.example.jokes.view
+package com.example.jokes.ui
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokes.model.Joke
-import com.example.jokes.utils.JokeView
+import com.example.jokes.data.model.Joke
+import com.example.jokes.utils.widgets.JokeView
 
-class JokesAdapter : RecyclerView.Adapter<JokesAdapter.JokesViewHolder>() {
+interface OnJokeTypeCLickListener {
+    fun onJokeTypeClick(type: String)
+}
+
+class JokesAdapter(
+    val onJokeTypeCLickListener: OnJokeTypeCLickListener? = null,
+    val byType: Boolean = false
+) : RecyclerView.Adapter<JokesAdapter.JokesViewHolder>() {
 
     private val jokes = mutableListOf<Joke>()
 
@@ -44,10 +51,17 @@ class JokesAdapter : RecyclerView.Adapter<JokesAdapter.JokesViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class JokesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class JokesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(joke: Joke) {
-            (itemView as JokeView).setData(joke)
+            val jokeView = itemView as JokeView
+            jokeView.setData(joke, byType)
+            jokeView.getJokeTypeView().setOnClickListener {
+                if (!joke.type.isNullOrEmpty()) {
+                    onJokeTypeCLickListener?.onJokeTypeClick(joke.type)
+                }
+            }
+
         }
     }
 }

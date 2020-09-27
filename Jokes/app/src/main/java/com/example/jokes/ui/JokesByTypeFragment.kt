@@ -1,39 +1,44 @@
-package com.example.jokes.view
+package com.example.jokes.ui
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.jokes.R
-import com.example.jokes.data.RetrofitService
-import com.example.jokes.model.Joke
-import com.example.jokes.utils.JokesRepositoryImpl
+import com.example.jokes.data.api.RetrofitService
+import com.example.jokes.data.repository.JokesRepositoryImpl
+import com.example.jokes.utils.JOKE_TYPE
 import com.example.jokes.view_model.JokesViewModel
 
-class JokesFragment : Fragment() {
+class JokesByTypeFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var button: Button
 
     private lateinit var jokesRepository: JokesRepositoryImpl
     private lateinit var viewModel: JokesViewModel
 
+    private var type: String? = null
+
     private val adapter by lazy {
-        JokesAdapter()
+        JokesAdapter(byType = true)
+    }
+
+    override fun setArguments(args: Bundle?) {
+        super.setArguments(args)
+        type = args?.getString(JOKE_TYPE)
+        (activity as MainActivity?)?.setActionBarTitle("#$type")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_jokes, container, false)
+        return inflater.inflate(R.layout.fragment_jokes_by_type, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,18 +50,19 @@ class JokesFragment : Fragment() {
         getJokes()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as MainActivity).setActionBarTitle("Jokes")
+    }
+
     private fun bindViews(view: View) {
         recyclerView = view.findViewById(R.id.recyclerView)
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
-        button = view.findViewById(R.id.button)
+        type?.let { (activity as MainActivity?)?.setActionBarTitle(it) }
 
         swipeRefreshLayout.setOnRefreshListener {
             adapter.clear()
             getJokes()
-        }
-
-        button.setOnClickListener {
-            viewModel.getRandomJoke()
         }
     }
 
@@ -71,7 +77,7 @@ class JokesFragment : Fragment() {
     }
 
     private fun getJokes() {
-        viewModel.getTenJokes()
+        type?.let { viewModel.getJokesByType(it) }
     }
 
     private fun observe() {
@@ -80,11 +86,6 @@ class JokesFragment : Fragment() {
                 is JokesViewModel.State.JokesListResult -> {
                     if (!result.jokes.isNullOrEmpty())
                         adapter.addJokes(result.jokes)
-                }
-                is JokesViewModel.State.JokeResult -> {
-                    if (result.joke != null) {
-                        showAlert(result.joke)
-                    }
                 }
                 is JokesViewModel.State.ShowLoading -> {
                     swipeRefreshLayout.isRefreshing = true
@@ -96,19 +97,5 @@ class JokesFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun showAlert(joke: Joke) {
-        val view =
-            LayoutInflater.from(requireContext()).inflate(R.layout.joke_detailed_view, null)
-        view.apply {
-            view.findViewById<TextView>(R.id.punchline).text = joke.punchline
-            view.findViewById<TextView>(R.id.setup).text = joke.setup
-        }
-        val builder = AlertDialog.Builder(context)
-        builder.setView(view)
-        builder.setPositiveButton(R.string.close) { _, _ ->
-        }
-        builder.show()
     }
 }

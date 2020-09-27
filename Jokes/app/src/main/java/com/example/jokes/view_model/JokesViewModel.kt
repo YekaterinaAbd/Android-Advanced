@@ -1,9 +1,8 @@
 package com.example.jokes.view_model
 
 import androidx.lifecycle.MutableLiveData
-import com.example.jokes.base.BaseViewModel
-import com.example.jokes.model.Joke
-import com.example.jokes.utils.JokesRepository
+import com.example.jokes.data.model.Joke
+import com.example.jokes.data.repository.JokesRepository
 import kotlinx.coroutines.launch
 
 class JokesViewModel(private val jokesRepository: JokesRepository) : BaseViewModel() {
@@ -15,6 +14,20 @@ class JokesViewModel(private val jokesRepository: JokesRepository) : BaseViewMod
             liveData.value = State.ShowLoading
             val jokes: List<Joke>? = try {
                 jokesRepository.getTenJokes()
+            } catch (e: Exception) {
+                //liveData.value = State.Error
+                emptyList()
+            }
+            liveData.value = State.JokesListResult(jokes)
+            liveData.value = State.HideLoading
+        }
+    }
+
+    fun getJokesByType(type: String) {
+        launch {
+            liveData.value = State.ShowLoading
+            val jokes: List<Joke>? = try {
+                jokesRepository.getJokesByType(type)
             } catch (e: Exception) {
                 //liveData.value = State.Error
                 emptyList()

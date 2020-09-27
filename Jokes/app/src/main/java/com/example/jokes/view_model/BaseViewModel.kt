@@ -1,4 +1,4 @@
-package com.example.jokes.base
+package com.example.jokes.view_model
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope

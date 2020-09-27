@@ -1,7 +1,6 @@
-package com.example.jokes.view
+package com.example.jokes.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import com.example.jokes.R
 
@@ -9,8 +8,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setFragment()
+    }
+
+    fun setActionBarTitle(title: String){
+        supportActionBar?.title = title
     }
 
     private fun setFragment(){

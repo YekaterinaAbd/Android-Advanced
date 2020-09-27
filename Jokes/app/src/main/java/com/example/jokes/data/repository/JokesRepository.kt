@@ -1,13 +1,12 @@
-package com.example.jokes.utils
+package com.example.jokes.data.repository
 
-import android.util.Log
-import com.example.jokes.data.JokeApi
-import com.example.jokes.data.RetrofitService
-import com.example.jokes.model.Joke
+import com.example.jokes.data.api.JokeApi
+import com.example.jokes.data.model.Joke
 
 interface JokesRepository {
     suspend fun getTenJokes(): List<Joke>?
     suspend fun getRandomJoke(): Joke?
+    suspend fun getJokesByType(type: String): List<Joke>?
 }
 
 class JokesRepositoryImpl(
@@ -19,5 +18,9 @@ class JokesRepositoryImpl(
 
     override suspend fun getRandomJoke(): Joke? {
         return service.getJoke().body()
+    }
+
+    override suspend fun getJokesByType(type: String): List<Joke>? {
+        return service.getJokesByType(type).body()
     }
 }
