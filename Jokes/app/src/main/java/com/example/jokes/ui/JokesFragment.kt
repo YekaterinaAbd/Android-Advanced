@@ -12,20 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.jokes.R
-import com.example.jokes.data.api.RetrofitService
 import com.example.jokes.data.model.Joke
-import com.example.jokes.data.repository.JokesRepositoryImpl
 import com.example.jokes.utils.JOKE_TYPE
 import com.example.jokes.view_model.JokesViewModel
+import org.koin.android.ext.android.inject
 
 class JokesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var button: Button
-
-    private lateinit var jokesRepository: JokesRepositoryImpl
-    private lateinit var viewModel: JokesViewModel
 
     private val onJokeTypeCLickListener = object : OnJokeTypeCLickListener {
         override fun onJokeTypeClick(type: String) {
@@ -38,6 +34,8 @@ class JokesFragment : Fragment() {
                 .addToBackStack(null).commit()
         }
     }
+
+    private val viewModel: JokesViewModel by inject()
 
     private val adapter by lazy {
         JokesAdapter(onJokeTypeCLickListener)
@@ -53,7 +51,6 @@ class JokesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         bindViews(view)
         setAdapter()
-        setViewModel()
         observe()
         getJokes()
     }
@@ -76,11 +73,6 @@ class JokesFragment : Fragment() {
     private fun setAdapter() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-    }
-
-    private fun setViewModel() {
-        jokesRepository = JokesRepositoryImpl(RetrofitService.getJokeApi())
-        viewModel = JokesViewModel(jokesRepository)
     }
 
     private fun getJokes() {
