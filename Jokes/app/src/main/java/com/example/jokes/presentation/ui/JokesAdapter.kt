@@ -1,10 +1,10 @@
-package com.example.jokes.ui
+package com.example.jokes.presentation.ui
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokes.data.model.Joke
-import com.example.jokes.utils.widgets.JokeView
+import com.example.jokes.presentation.model.JokeModel
+import com.example.jokes.presentation.utils.widgets.JokeView
 
 interface OnJokeTypeCLickListener {
     fun onJokeTypeClick(type: String)
@@ -15,7 +15,7 @@ class JokesAdapter(
     val byType: Boolean = false
 ) : RecyclerView.Adapter<JokesAdapter.JokesViewHolder>() {
 
-    private val jokes = mutableListOf<Joke>()
+    private val jokes = mutableListOf<JokeModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokesViewHolder {
         val view = JokeView(parent.context)
@@ -39,7 +39,7 @@ class JokesAdapter(
         return jokes.size
     }
 
-    fun addJokes(items: List<Joke>?) {
+    fun addJokes(items: List<JokeModel>?) {
         if (!items.isNullOrEmpty()) {
             jokes.addAll(items)
             notifyDataSetChanged()
@@ -53,7 +53,7 @@ class JokesAdapter(
 
     inner class JokesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(joke: Joke) {
+        fun bind(joke: JokeModel) {
             val jokeView = itemView as JokeView
             jokeView.setData(joke, byType)
             jokeView.getJokeTypeView().setOnClickListener {

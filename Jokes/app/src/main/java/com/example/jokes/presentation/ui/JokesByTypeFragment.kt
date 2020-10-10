@@ -1,16 +1,17 @@
-package com.example.jokes.ui
+package com.example.jokes.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.jokes.R
-import com.example.jokes.utils.JOKE_TYPE
-import com.example.jokes.view_model.JokesViewModel
+import com.example.jokes.presentation.State
+import com.example.jokes.presentation.utils.JOKE_TYPE
 import org.koin.android.ext.android.inject
 
 class JokesByTypeFragment : Fragment() {
@@ -72,21 +73,25 @@ class JokesByTypeFragment : Fragment() {
     }
 
     private fun observe() {
-        viewModel.liveData.observe(viewLifecycleOwner, { result ->
+        viewModel.commonLiveData.observe(viewLifecycleOwner, { result ->
             when (result) {
-                is JokesViewModel.State.JokesListResult -> {
-                    if (!result.jokes.isNullOrEmpty())
-                        adapter.addJokes(result.jokes)
-                }
-                is JokesViewModel.State.ShowLoading -> {
+                is State.ShowLoading -> {
                     swipeRefreshLayout.isRefreshing = true
                 }
-                is JokesViewModel.State.HideLoading -> {
+                is State.HideLoading -> {
                     swipeRefreshLayout.isRefreshing = false
                 }
-                is JokesViewModel.State.Error -> {
+                is State.Error -> {
+                    Toast.makeText(context, "Ups, something went wrong..", Toast.LENGTH_SHORT)
+                        .show()
+                    swipeRefreshLayout.isRefreshing = false
                 }
             }
+        })
+
+        viewModel.jokesListLiveData.observe(viewLifecycleOwner, { result ->
+            if (!result.isNullOrEmpty())
+                adapter.addJokes(result)
         })
     }
 }

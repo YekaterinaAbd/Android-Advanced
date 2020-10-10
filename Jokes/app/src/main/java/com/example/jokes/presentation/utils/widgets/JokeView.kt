@@ -1,4 +1,4 @@
-package com.example.jokes.utils.widgets
+package com.example.jokes.presentation.utils.widgets
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.example.jokes.R
-import com.example.jokes.data.model.Joke
+import com.example.jokes.data.model.JokeData
+import com.example.jokes.presentation.model.JokeModel
 
 
 class JokeView : CardView {
@@ -25,7 +26,7 @@ class JokeView : CardView {
         init(context, attrs)
     }
 
-    fun setData(joke: Joke, byType: Boolean) {
+    fun setData(joke: JokeModel, byType: Boolean) {
         punchline.text = joke.punchline
         setup.text = joke.setup
         if(!byType) type.text = context.getString(R.string.tag, joke.type)
@@ -34,14 +35,14 @@ class JokeView : CardView {
         arrow.setImageResource(R.drawable.ic_down_arrow)
 
         this.setOnClickListener {
-            if (!joke.closed) {
+            if (joke.closed) {
                 punchline.visibility = View.VISIBLE
                 arrow.setImageResource(R.drawable.ic_up_arrow)
-                joke.closed = true
+                joke.closed = false
             } else {
                 punchline.visibility = View.GONE
                 arrow.setImageResource(R.drawable.ic_down_arrow)
-                joke.closed = false
+                joke.closed = true
             }
         }
     }

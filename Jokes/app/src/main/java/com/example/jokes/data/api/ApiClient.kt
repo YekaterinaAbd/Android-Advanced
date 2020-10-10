@@ -1,7 +1,6 @@
 package com.example.jokes.data.api
 
 import android.util.Log
-import com.example.jokes.utils.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
