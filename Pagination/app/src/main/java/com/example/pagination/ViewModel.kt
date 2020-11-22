@@ -9,14 +9,19 @@ import kotlinx.coroutines.Dispatchers
 
 class NewsViewModel : ViewModel() {
 
-    private var newsLiveData: LiveData<PagedList<News>>
-    private val newsDataSourceFactory = NewsDataSourceFactory(Dispatchers.IO)
+    private val config: PagedList.Config
+    private lateinit var newsLiveData: LiveData<PagedList<News>>
+    private lateinit var newsDataSourceFactory: NewsDataSourceFactory
 
     init {
-        val config = PagedList.Config.Builder()
+        config = PagedList.Config.Builder()
             .setPageSize(10)
             .setEnablePlaceholders(false)
             .build()
+    }
+
+    fun getNews(){
+        newsDataSourceFactory = NewsDataSourceFactory(Dispatchers.IO)
         newsLiveData = LivePagedListBuilder(newsDataSourceFactory, config).build()
     }
 
@@ -25,7 +30,7 @@ class NewsViewModel : ViewModel() {
         NewsDataSource::state
     )
 
-    fun getNews(): LiveData<PagedList<News>> = newsLiveData
+   fun getLiveData(): LiveData<PagedList<News>> = newsLiveData
 
     fun listIsEmpty(): Boolean {
         return newsLiveData.value?.isEmpty() ?: true

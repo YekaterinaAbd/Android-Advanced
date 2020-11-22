@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5915a504-509b-40ec-adab-cdaf90c200d9" name="Default Changelist" comment="" />
+    <list default="true" id="5915a504-509b-40ec-adab-cdaf90c200d9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Jokes/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Pagination/app/src/main/java/com/example/pagination/NewsList.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Pagination/app/src/main/java/com/example/pagination/Service.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Coroutines" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Jokes/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Jokes/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Jokes/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Jokes/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Jokes/app/src/main/java/com/example/jokes/presentation/ui/JokesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../Jokes/app/src/main/java/com/example/jokes/presentation/ui/JokesFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Jokes/app/src/main/res/layout/fragment_jokes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Jokes/app/src/main/res/layout/fragment_jokes.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Jokes/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Jokes/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +34,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$PROJECT_DIR$/../../sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/coroutines-codelab" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
   </component>
   <component name="SvnConfiguration">
@@ -38,5 +49,15 @@
       <updated>1604055789848</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="421" y="96" key="FileChooserDialogImpl" timestamp="1604660798330">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="96" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1604660798330" />
+    <state x="347" y="44" width="587" height="592" key="find.popup" timestamp="1604660772838">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="347" y="44" width="587" height="592" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1604660772838" />
   </component>
 </project>

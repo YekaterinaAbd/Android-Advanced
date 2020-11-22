@@ -21,7 +21,7 @@ import org.koin.android.ext.android.inject
 class JokesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+  //  private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var button: Button
 
     private val onJokeTypeCLickListener = object : OnJokeTypeCLickListener {
@@ -58,13 +58,13 @@ class JokesFragment : Fragment() {
 
     private fun bindViews(view: View) {
         recyclerView = view.findViewById(R.id.recyclerView)
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+//        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         button = view.findViewById(R.id.button)
 
-        swipeRefreshLayout.setOnRefreshListener {
-            adapter.clear()
-            getJokes()
-        }
+//        swipeRefreshLayout.setOnRefreshListener {
+//            adapter.clear()
+//            getJokes()
+//        }
 
         button.setOnClickListener {
             getRandomJoke()
@@ -87,15 +87,15 @@ class JokesFragment : Fragment() {
         viewModel.commonLiveData.observe(viewLifecycleOwner, { result ->
             when (result) {
                 is State.ShowLoading -> {
-                    swipeRefreshLayout.isRefreshing = true
+                    //swipeRefreshLayout.isRefreshing = true
                 }
                 is State.HideLoading -> {
-                    swipeRefreshLayout.isRefreshing = false
+                   // swipeRefreshLayout.isRefreshing = false
                 }
                 is State.Error -> {
                     Toast.makeText(context, "Ups, something went wrong..", Toast.LENGTH_SHORT)
                         .show()
-                    swipeRefreshLayout.isRefreshing = false
+                   // swipeRefreshLayout.isRefreshing = false
                 }
             }
         })

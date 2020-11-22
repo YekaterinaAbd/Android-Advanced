@@ -1,6 +1,7 @@
 package com.example.pagination
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -40,7 +41,8 @@ class MainActivity : AppCompatActivity() {
         adapter = Adapter()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
-        viewModel.getNews().observe(this, {
+        viewModel.getNews()
+        viewModel.getLiveData().observe(this, {
             adapter.submitList(it)
         })
     }
